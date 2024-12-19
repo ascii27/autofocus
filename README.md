@@ -1,4 +1,5 @@
 # Autofocus 🎯
+<img src="autofocus.png" alt="Autofocus" width="128" height="128">
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Node.js](https://img.shields.io/badge/Node.js-43853D?style=flat&logo=node.js&logoColor=white)](https://nodejs.org/)

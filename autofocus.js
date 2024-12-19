@@ -22,6 +22,7 @@ const DEFAULT_STATUS_EMOJI = config.slack?.defaults?.status_emoji || ":headphone
 let focusTimer = 0;
 let isSnoozing = false;
 let currentApp = null;
+let cooldownTimeout = null;
 
 async function setSlackStatus(statusText, statusEmoji) {
     try {
@@ -86,6 +87,12 @@ async function checkActiveApp() {
         );
 
         if (focusApp) {
+            // Clear any existing cooldown when returning to focus app
+            if (cooldownTimeout) {
+                clearTimeout(cooldownTimeout);
+                cooldownTimeout = null;
+            }
+
             if (currentApp !== appName) {
                 focusTimer = 0;
                 currentApp = appName;
@@ -104,13 +111,14 @@ async function checkActiveApp() {
             focusTimer = 0;
             currentApp = null;
             
-            if (isSnoozing) {
-                // Start cooldown timer
-                setTimeout(async () => {
+            if (isSnoozing && !cooldownTimeout) {
+                // Start cooldown timer only if one isn't already running
+                cooldownTimeout = setTimeout(async () => {
                     console.log('Focus mode ended. Disabling Slack DND.');
                     await setSlackStatus('', '');
                     await endSlackDnd();
                     isSnoozing = false;
+                    cooldownTimeout = null;
                 }, config.focus_mode.cooldown_minutes * 60 * 1000);
             }
         }
