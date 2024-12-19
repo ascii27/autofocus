@@ -1,6 +1,17 @@
-# Autofocus
+# Autofocus 🎯
 
-A background tool that automatically manages your Slack status and Do Not Disturb settings based on your active applications.
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Node.js](https://img.shields.io/badge/Node.js-43853D?style=flat&logo=node.js&logoColor=white)](https://nodejs.org/)
+
+A macOS background tool that automatically manages your Slack status and Do Not Disturb settings based on your active applications. Perfect for developers, writers, and anyone who needs focused work time.
+
+## Features
+
+- 🔍 Automatically detects when you're in focus mode based on active applications
+- 🔕 Updates Slack Do Not Disturb status automatically
+- ⚙️ Fully configurable through YAML configuration
+- 🕒 Customizable timers for focus detection and cooldown
+- 🖥️ Support for multiple applications and window titles
 
 ## Setup
 
@@ -49,4 +60,3 @@ applications:
 
 ```bash
 node autofocus.js
-```
