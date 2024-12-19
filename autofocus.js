@@ -71,7 +71,6 @@ async function endSlackDnd() {
 
 async function checkActiveApp() {
     try {
-        console.log("Checking...");
         const activeApp = await activeWin();
         if (!activeApp) {
             console.log("No active app found");
@@ -79,8 +78,6 @@ async function checkActiveApp() {
         }
 
         const { owner: { name: appName }, title: windowTitle } = activeApp;
-        console.log("Active App: " + appName);
-        console.log("Window Title: " + windowTitle);
 
         // Find matching application in config
         const focusApp = config.focus_mode.applications.find(app => 
@@ -122,5 +119,12 @@ async function checkActiveApp() {
     }
 }
 
-// Main loop
-setInterval(checkActiveApp, CHECK_INTERVAL_SECONDS * 1000);
+// Remove the immediate interval start
+// setInterval(checkActiveApp, CHECK_INTERVAL_SECONDS * 1000);
+
+// Export variables and functions for the Electron app
+module.exports = {
+    checkActiveApp,
+    endSlackDnd,
+    CHECK_INTERVAL_SECONDS
+};

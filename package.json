@@ -1,6 +1,20 @@
 {
+  "name": "autofocus",
+  "version": "1.0.0",
+  "description": "Automatically updates Slack status based on active window",
+  "main": "main.js",
+  "bin": {
+    "autofocus": "./main.js"
+  },
+  "scripts": {
+    "start": "electron ."
+  },
+  "author": "ascii27",
+  "license": "MIT",
   "dependencies": {
     "active-win": "^8.2.1",
-    "axios": "^1.7.9"
+    "axios": "^1.7.9",
+    "electron": "^28.0.0",
+    "js-yaml": "^4.1.0"
   }
 }

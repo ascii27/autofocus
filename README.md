@@ -12,6 +12,10 @@ A macOS background tool that automatically manages your Slack status and Do Not 
 - ⚙️ Fully configurable through YAML configuration
 - 🕒 Customizable timers for focus detection and cooldown
 - 🖥️ Support for multiple applications and window titles
+- System tray application for easy access
+- Automatic Slack status updates based on active window
+- Do Not Disturb mode when focusing
+- Launch on system startup option
 
 ## Prerequisites
 
@@ -23,70 +27,107 @@ A macOS background tool that automatically manages your Slack status and Do Not 
    - Enable permission for your terminal application
    - **Note**: You'll need to restart your terminal after enabling this permission
 
-## Setup
+## Installation
 
-1. Install dependencies:
+1. Clone and install globally:
 ```bash
-npm install active-win axios yaml
+git clone https://github.com/ascii27/autofocus.git
+cd autofocus
+npm install
+npm install -g .
 ```
 
-2. Configure your settings:
-   - Copy the `config.yaml` file
-   - Replace `slack.token` with your Slack token
-   - Customize the applications and focus mode settings
+2. Create your configuration:
+```bash
+mkdir -p ~/.config/autofocus
+cp config.example.yaml ~/.config/autofocus/config.yaml
+```
+
+3. Edit your configuration:
+```bash
+nano ~/.config/autofocus/config.yaml
+```
+Add your Slack token and customize your focus mode settings.
+
+4. Set up auto-start (optional):
+```bash
+# Create LaunchAgents directory if it doesn't exist
+mkdir -p ~/Library/LaunchAgents
+
+# Copy launch agent plist
+cp com.ascii27.autofocus.plist ~/Library/LaunchAgents/
+
+# Load the launch agent
+launchctl load ~/Library/LaunchAgents/com.ascii27.autofocus.plist
+```
+
+## Running the App
+
+### Manual Start
+```bash
+autofocus
+```
+
+The app will appear in your system tray. Right-click the icon to:
+- Start/Stop monitoring
+- Quit the application
+
+### Managing the Service
+
+- Stop the service: `launchctl unload ~/Library/LaunchAgents/com.ascii27.autofocus.plist`
+- Start the service: `launchctl load ~/Library/LaunchAgents/com.ascii27.autofocus.plist`
+- Check if running: `launchctl list | grep autofocus`
+
+### Logs
+
+When running as a service, logs are written to:
+- `~/.config/autofocus/autofocus.log` - Standard output
+- `~/.config/autofocus/autofocus.error.log` - Error messages
 
 ## Configuration
 
-The `config.yaml` file supports the following settings:
+See `config.example.yaml` for available settings:
+- Slack API token
+- Check interval
+- Focus time threshold
+- Default status text and emoji
 
-### Slack Settings
+### Example Configuration
+
 ```yaml
 slack:
-  token: "your-slack-token"  # Your Slack API token
+  token: "xoxp-your-token-here"
   defaults:
-    status_text: "Focus time"  # Default status message
-    status_emoji: ":headphones:"  # Default emoji
-```
+    status_text: "Focus time"
+    status_emoji: ":headphones:"
 
-### Focus Mode Applications
-```yaml
-focus_mode:
-  cooldown_minutes: 5  # Wait time before ending DND
-  applications:
-    - name: "Application Name"
-      window_title_contains: "Optional Title"  # Leave empty to match any window
-      dnd_duration_minutes: 30
-      status_text: "Custom Status"  # Optional: override default status
-      status_emoji: ":custom-emoji:"  # Optional: override default emoji
-```
-
-### System Settings
-```yaml
 system:
-  check_interval_seconds: 10  # Check frequency
-  focus_threshold_minutes: 5  # Time before activating focus mode
+  check_interval_seconds: 5
+  focus_threshold_minutes: 2
+
+focus_mode:
+  applications:
+    - name: "Visual Studio Code"
+      window_title_contains: ""  # Empty means any window title
+      status_text: "Coding"  # Optional: override default status
+      status_emoji: ":computer:"  # Optional: override default emoji
+      dnd_duration_minutes: 45
 ```
 
-Each application in the focus mode configuration can have its own:
-- Window title trigger (optional)
-- DND duration
-- Custom status message (falls back to default if not specified)
-- Custom status emoji (falls back to default if not specified)
+## Uninstallation
 
-## Example Configuration
-
-```yaml
-applications:
-  - name: "Google Chrome"
-    window_title_contains: "- Google Docs"
-    dnd_duration_minutes: 30
-  
-  - name: "Visual Studio Code"
-    window_title_contains: ""  # Empty means any window title
-    dnd_duration_minutes: 45
-```
-
-## Running
-
+1. Stop and remove the launch agent (if installed):
 ```bash
-node autofocus.js
+launchctl unload ~/Library/LaunchAgents/com.ascii27.autofocus.plist
+rm ~/Library/LaunchAgents/com.ascii27.autofocus.plist
+```
+
+2. Remove the global installation:
+```bash
+npm uninstall -g autofocus
+```
+
+3. Remove configuration files:
+```bash
+rm -rf ~/.config/autofocus
+```
