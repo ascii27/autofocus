@@ -1,0 +1,23 @@
+# Slack Configuration
+slack:
+  token: "xoxp-your-slack-token-here"  # Replace with your Slack token
+
+# Focus Mode Configuration
+focus_mode:
+  # How long to wait (in minutes) after detecting no focus before ending DND
+  cooldown_minutes: 5
+  
+  # Applications that can trigger focus mode
+  applications:
+    - name: "Google Chrome"
+      window_title_contains: "- Google Docs"
+      dnd_duration_minutes: 30
+    
+    - name: "Visual Studio Code"
+      window_title_contains: ""  # Empty means any window title will trigger focus mode
+      dnd_duration_minutes: 45
+
+# System Configuration
+system:
+  check_interval_seconds: 10  # How often to check for active window
+  focus_threshold_minutes: 5  # How long to wait before activating focus mode
