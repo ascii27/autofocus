@@ -13,6 +13,16 @@ A macOS background tool that automatically manages your Slack status and Do Not 
 - 🕒 Customizable timers for focus detection and cooldown
 - 🖥️ Support for multiple applications and window titles
 
+## Prerequisites
+
+1. macOS operating system
+2. Node.js installed
+3. Screen Recording Permission:
+   - The terminal application you use (e.g., Terminal.app or iTerm) needs Screen Recording permission to detect active windows
+   - Go to System Preferences → Security & Privacy → Privacy → Screen Recording
+   - Enable permission for your terminal application
+   - **Note**: You'll need to restart your terminal after enabling this permission
+
 ## Setup
 
 1. Install dependencies:
