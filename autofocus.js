@@ -89,6 +89,7 @@ async function checkActiveApp() {
         if (focusApp) {
             // Clear any existing cooldown when returning to focus app
             if (cooldownTimeout) {
+                console.log('Focus app returned. Clearing cooldown.');
                 clearTimeout(cooldownTimeout);
                 cooldownTimeout = null;
             }
@@ -112,6 +113,7 @@ async function checkActiveApp() {
             currentApp = null;
             
             if (isSnoozing && !cooldownTimeout) {
+                console.log('Cooldown started.');
                 // Start cooldown timer only if one isn't already running
                 cooldownTimeout = setTimeout(async () => {
                     console.log('Focus mode ended. Disabling Slack DND.');
