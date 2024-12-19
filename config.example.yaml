@@ -1,6 +1,9 @@
 # Slack Configuration
 slack:
   token: "xoxp-your-slack-token-here"  # Replace with your Slack token
+  defaults:
+    status_text: "Focus time"  # Default status message if not specified for an application
+    status_emoji: ":headphones:"  # Default emoji if not specified for an application
 
 # Focus Mode Configuration
 focus_mode:
@@ -12,10 +15,14 @@ focus_mode:
     - name: "Google Chrome"
       window_title_contains: "- Google Docs"
       dnd_duration_minutes: 30
+      status_text: "Writing in Google Docs"  # Optional: override default status
+      status_emoji: ":pencil:"  # Optional: override default emoji
     
     - name: "Visual Studio Code"
       window_title_contains: ""  # Empty means any window title will trigger focus mode
       dnd_duration_minutes: 45
+      status_text: "Coding"  # Optional: override default status
+      status_emoji: ":computer:"  # Optional: override default emoji
 
 # System Configuration
 system:

@@ -16,6 +16,8 @@ try {
 const SLACK_TOKEN = config.slack.token;
 const CHECK_INTERVAL_SECONDS = config.system.check_interval_seconds;
 const FOCUS_THRESHOLD_MINUTES = config.system.focus_threshold_minutes;
+const DEFAULT_STATUS_TEXT = config.slack?.defaults?.status_text || "Focus time";
+const DEFAULT_STATUS_EMOJI = config.slack?.defaults?.status_emoji || ":headphones:";
 
 let focusTimer = 0;
 let isSnoozing = false;
@@ -25,8 +27,8 @@ async function setSlackStatus(statusText, statusEmoji) {
     try {
         await axios.post('https://slack.com/api/users.profile.set', {
             profile: {
-                status_text: statusText,
-                status_emoji: statusEmoji,
+                status_text: statusText || '',
+                status_emoji: statusEmoji || '',
             },
         }, {
             headers: {
@@ -95,7 +97,9 @@ async function checkActiveApp() {
             focusTimer++;
             if (focusTimer >= FOCUS_THRESHOLD_MINUTES && !isSnoozing) {
                 console.log(`Focusing in ${appName}. Enabling Slack DND.`);
-                await setSlackStatus(`Focusing in ${appName}`, ':focus:');
+                const statusText = focusApp.status_text || DEFAULT_STATUS_TEXT;
+                const statusEmoji = focusApp.status_emoji || DEFAULT_STATUS_EMOJI;
+                await setSlackStatus(statusText, statusEmoji);
                 await setSlackDnd(focusApp.dnd_duration_minutes);
                 isSnoozing = true;
             }

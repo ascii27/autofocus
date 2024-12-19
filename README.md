@@ -37,21 +37,41 @@ npm install active-win axios yaml
 
 ## Configuration
 
-The `config.yaml` file contains all settings:
+The `config.yaml` file supports the following settings:
 
 ### Slack Settings
-- `slack.token`: Your Slack API token
+```yaml
+slack:
+  token: "your-slack-token"  # Your Slack API token
+  defaults:
+    status_text: "Focus time"  # Default status message
+    status_emoji: ":headphones:"  # Default emoji
+```
 
-### Focus Mode Settings
-- `cooldown_minutes`: How long to wait after focus mode is lost before turning off DND
-- `applications`: List of applications that can trigger focus mode
-  - `name`: Application name
-  - `window_title_contains`: Text that must be in the window title (leave empty to match any window)
-  - `dnd_duration_minutes`: How long to set DND for this application
+### Focus Mode Applications
+```yaml
+focus_mode:
+  cooldown_minutes: 5  # Wait time before ending DND
+  applications:
+    - name: "Application Name"
+      window_title_contains: "Optional Title"  # Leave empty to match any window
+      dnd_duration_minutes: 30
+      status_text: "Custom Status"  # Optional: override default status
+      status_emoji: ":custom-emoji:"  # Optional: override default emoji
+```
 
 ### System Settings
-- `check_interval_seconds`: How often to check for active window
-- `focus_threshold_minutes`: How long to wait in an application before activating focus mode
+```yaml
+system:
+  check_interval_seconds: 10  # Check frequency
+  focus_threshold_minutes: 5  # Time before activating focus mode
+```
+
+Each application in the focus mode configuration can have its own:
+- Window title trigger (optional)
+- DND duration
+- Custom status message (falls back to default if not specified)
+- Custom status emoji (falls back to default if not specified)
 
 ## Example Configuration
 
